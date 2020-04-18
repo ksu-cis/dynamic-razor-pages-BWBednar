@@ -1,3 +1,54 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification 
 for details on configuring this project to bundle and minify static web assets. */
 
+ul.movie-list {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid gray;
+}
+
+ul.movie-list > li {
+    list-style-type: none;
+    border-bottom: 1px solid lightgray;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 50px;
+}
+
+.ratings{
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    color: darkslategray;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.mpaa, .genre {
+    color: slategray;
+}
+
+.imdb, .rotten-tomatoes{
+    color: gray;
+    border: 1px solid gray;
+    width: 60px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.imdb::before {
+    content: "IMDB";
+    display: block;
+    font-size: 1rem;
+}
+
+.rotten-tomatoes::before {
+    content: "Rotten";
+    display: block;
+    font-size: 1rem;
+}
