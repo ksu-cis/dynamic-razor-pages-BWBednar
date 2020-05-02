@@ -18,7 +18,7 @@ namespace Movies.Pages
         /// <summary>
         /// The current search terms 
         /// </summary>
-        [BindProperty]
+        [BindProperty (SupportsGet = true)]
         public string SearchTerms { get; set; } = "";
 
         /// <summary>
@@ -69,11 +69,90 @@ namespace Movies.Pages
             SearchTerms = Request.Query["SearchTerms"];
             MPAARatings = Request.Query["MPAARatings"];
             Genres = Request.Query["Genres"];
+            Movies = MovieDatabase.All;
+            if (SearchTerms != null)
+            {
+                Movies = MovieDatabase.All.Where(movie => 
+                movie.Title != null && 
+                movie.Title.Contains(SearchTerms, StringComparison.CurrentCultureIgnoreCase)
+                );
+                
+            }
+            if (MPAARatings != null && MPAARatings.Length != 0)
+            {
+                Movies = Movies.Where(movie => 
+                movie.MPAARating != null &&
+                MPAARatings.Contains(movie.MPAARating)
+                );
+            }
+            if (Genres != null && Genres.Length != 0)
+            {
+                Movies = Movies.Where(movie =>
+                movie.MajorGenre != null &&
+                Genres.Contains(movie.MajorGenre)
+                );
+            }
+            if (!(IMDBMin == null && IMDBMax == null))
+            {
+                if (IMDBMin == null && IMDBMax != null)
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.IMDBRating <= IMDBMax
+                    );
+                }
+                else if (IMDBMin != null && IMDBMax == null)
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.IMDBRating >= IMDBMin
+                    );
+                }
+                else
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.IMDBRating >= IMDBMin &&
+                    movie.IMDBRating <= IMDBMax
+                    );
+                }
+            }
+            if (Genres != null && Genres.Length != 0)
+            {
+                Movies = Movies.Where(movie =>
+                movie.MajorGenre != null &&
+                Genres.Contains(movie.MajorGenre)
+                );
+            }
+            if (!(RottenMin == null && RottenMax == null))
+            {
+                if (RottenMin == null && RottenMax != null)
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.RottenTomatoesRating <= RottenMax
+                    );
+                }
+                else if (RottenMin != null && RottenMax == null)
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.RottenTomatoesRating >= RottenMin
+                    );
+                }
+                else
+                {
+                    Movies = Movies.Where(movie =>
+                    movie.RottenTomatoesRating >= RottenMin &&
+                    movie.RottenTomatoesRating <= RottenMax
+                    );
+                }
+            }
+
+
+
+            /*
             Movies = MovieDatabase.Search(SearchTerms);
             Movies = MovieDatabase.FilterByMPAARating(Movies, MPAARatings);
             Movies = MovieDatabase.FilterByGenre(Movies, Genres);
             Movies = MovieDatabase.FilterByIMDBRating(Movies, IMDBMin, IMDBMax);
             Movies = MovieDatabase.FilterByRottenTomatoesRating(Movies, RottenMin, RottenMax);
+    */
         }
 
 
